@@ -2,8 +2,11 @@ package br.com.alura;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class Curso {
@@ -26,6 +29,15 @@ public class Curso {
 	private List<Aula> aulas = new ArrayList<Aula>();
 	
 	private Set<Aluno> alunos = new HashSet<>();
+	//Mantém a ordem na qual os objetos foram adicionados.
+	//private Set<Aluno> alunos = new LinkedHashSet<>();
+	
+	private Map<Integer, Aluno> matriculaParaAluno = new HashMap<>();
+	//Guarda a ordem das linhas.
+	//private Map<Integer, Aluno> matriculaParaAluno = new LinkedHashMap<>();
+	
+	//Vários alunos.
+	private Map<Integer, Set<Aluno>> matriculaAlunos;
 
 	public Curso(String nome, String instrutor) {
 		this.nome = nome;
@@ -69,6 +81,8 @@ public class Curso {
 	
 	public void matricula(Aluno aluno) {
 		this.alunos.add(aluno);
+		//Associa aluno e a matrícula como chave do map.
+		this.matriculaParaAluno.put(aluno.getNumeroMatricula(), aluno);
 	}
 	
 	public Set<Aluno> getAlunos(){
@@ -78,6 +92,12 @@ public class Curso {
 	public boolean estaMatriculado(Aluno aluno) {
 		//Método contains utiliza o equals. a1.equals(marcosCardoso)
 		return this.alunos.contains(aluno);
+	}
+	
+	public Aluno BuscaMatriculado(int numero) {
+		if (!matriculaParaAluno.containsKey(numero))
+			throw new NoSuchElementException();
+		return matriculaParaAluno.get(numero);
 	}
 
 }
